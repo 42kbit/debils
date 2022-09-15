@@ -1,4 +1,4 @@
-$(dstack_push)
+$(rbeg)
 
 OBJS_$(d)	:=$(od)/sum.o
 TGTS_$(d)	:=$(bd)/libsum.so
@@ -13,9 +13,4 @@ $(d): $(TGTS_$(d))
 $(TGTS_$(d)):	$(OBJS_$(d))
 	$(L_LINK)
 
-include $(patsubst %.c,\
-	$(DIR_OBJS)/%.d,\
-	$(patsubst $(DIR_OBJS)/%.o,%.c,$(OBJS_$(d))))
-
-$(dincdeps)
-$(dstack_pop)
+$(rend)

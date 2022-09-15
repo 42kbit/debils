@@ -1,4 +1,4 @@
-$(dstack_push)
+$(rbeg)
 
 OBJS_$(d)	:=$(od)/main.o $(od)/dir/another.o
 TGTS_$(d)	:=$(bd)/a.out
@@ -21,5 +21,4 @@ $(d): $(TGTS_$(d))
 $(TGTS_$(d)): $(DIR_OUT)/bee/libsum.so $(OBJS_$(d))
 	$(L_LINK)
 
-$(dincdeps)
-$(dstack_pop)
+$(rend)

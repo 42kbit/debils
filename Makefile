@@ -70,6 +70,22 @@ $(eval include $(patsubst %.c,\
 	$(patsubst $(DIR_OBJS)/%.o,%.c,$(OBJS_$(d)))) )
 endef
 
+define rbeg
+$(dstack_push)
+endef
+
+define rend
+
+$(eval
+ifneq ($(MAKECMDGOALS),clean)
+$$(dincdeps)
+endif
+)
+
+$(dstack_pop)
+
+endef
+
 dirguard=@mkdir -p $(@D)
 
 append =$(eval $(1):=$($(1)) $(2))
@@ -106,10 +122,7 @@ $(DIR_OBJS)/%.d: %.c
 init:
 # init build tree
 	mkdir -p $(DIR_OUT) \
-		$(DIR_OBJS) \
-		$(addprefix $(DIR_OUT)/,$(shell find $(ROOT_TOP) -type d))\
-		$(addprefix $(DIR_OBJS)/,$(shell find $(ROOT_TOP) -type d))
-
+		$(addprefix $(DIR_OUT)/,$(shell find $(ROOT_TOP) -type d))
 # TGT_* CLEAN are user defined
 targets: $(TGT_BIN) $(TGT_SBIN) $(TGT_ETC) $(TGT_LIB)
 
