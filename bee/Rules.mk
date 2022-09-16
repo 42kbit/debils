@@ -1,5 +1,8 @@
 $(rbeg)
 
+SUBDIRS	:=sub
+$(dinclude)
+
 OBJS_$(d)	:=$(od)/sum.o
 TGTS_$(d)	:=$(bd)/libsum.so
 

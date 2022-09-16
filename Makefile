@@ -52,6 +52,8 @@ endef
 
 define dstack_pop
 $(eval d	:=$(dirstack_$(sp)))
+$(eval bd	:=$(DIR_OUT)/$(d))
+$(eval od	:=$(DIR_OBJS)/$(d))
 $(eval sp	:=$(basename $(sp)))
 endef
 
@@ -64,11 +66,9 @@ endef
 # includes deps from .c files, with use of OBJS_$(d).
 # parses OBJS_$(d) to get source files, than makes deps
 # from it.
-define dincdeps
-$(eval include $(patsubst %.c,\
+dincdeps =$(eval include $(patsubst %.c,\
 	$(DIR_OBJS)/%.d,\
 	$(patsubst $(DIR_OBJS)/%.o,%.c,$(OBJS_$(d)))) )
-endef
 
 define rbeg
 $(dstack_push)
