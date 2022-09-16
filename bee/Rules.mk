@@ -1,9 +1,9 @@
-$(rbeg)
-
 SUBDIRS	:=sub
 $(dinclude)
 
-OBJS_$(d)	:=$(od)/sum.o
+COBJS_$(d)	:=$(od)/sum.o
+
+OBJS_$(d)	:=$(COBJS_$(d))
 TGTS_$(d)	:=$(bd)/libsum.so
 
 CF_$(d)		:=-O2 -I$(d)/include
@@ -16,4 +16,3 @@ $(d): $(TGTS_$(d))
 $(TGTS_$(d)):	$(OBJS_$(d))
 	$(L_LINK)
 
-$(rend)

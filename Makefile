@@ -60,15 +60,20 @@ endef
 define dinclude
 $(foreach val,$(SUBDIRS),\
 	$(eval dir:=$(d)/$(val))\
-	$(eval include $(dir)/Rules.mk))
+	$(rbeg)\
+	$(eval include $(dir)/Rules.mk)\
+	$(rend))
 endef
 
-# includes deps from .c files, with use of OBJS_$(d).
-# parses OBJS_$(d) to get source files, than makes deps
+# cincdeps (C Include Dependency)
+# Includes dependency for C, currently only for gcc
+
+# includes deps from .c files, with use of COBJS_$(d).
+# parses COBJS_$(d) to get source files, than makes deps
 # from it.
-dincdeps =$(eval include $(patsubst %.c,\
+cincdeps =$(eval include $(patsubst %.c,\
 	$(DIR_OBJS)/%.d,\
-	$(patsubst $(DIR_OBJS)/%.o,%.c,$(OBJS_$(d)))) )
+	$(patsubst $(DIR_OBJS)/%.o,%.c,$(COBJS_$(d)))) )
 
 define rbeg
 $(dstack_push)
@@ -78,7 +83,7 @@ define rend
 
 $(eval
 ifneq ($(MAKECMDGOALS),clean)
-$$(dincdeps)
+$$(cincdeps)
 endif
 )
 
@@ -103,7 +108,9 @@ ROOT_TOP	:=ant bee
 SUBDIRS	:=$(ROOT_TOP)
 $(foreach val,$(SUBDIRS),\
 	$(eval dir:=$(val))\
-	$(eval include $(dir)/Rules.mk))
+	$(rbeg)\
+	$(eval include $(dir)/Rules.mk)\
+	$(rend))
 
 $(DIR_OBJS)/%.o: %.c
 	$(dirguard)
