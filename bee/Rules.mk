@@ -1,5 +1,4 @@
-SUBDIRS	:=sub
-$(dinclude)
+SUBDIRS_$(d)	:=sub
 
 COBJS_$(d)	:=$(od)/sum.o
 

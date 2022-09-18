@@ -58,10 +58,11 @@ $(eval sp	:=$(basename $(sp)))
 endef
 
 define dinclude
-$(foreach val,$(SUBDIRS),\
+$(foreach val,$(SUBDIRS_$(d)),\
 	$(eval dir:=$(d)/$(val))\
 	$(rbeg)\
 	$(eval include $(dir)/Rules.mk)\
+	$(call dinclude)\
 	$(rend))
 endef
 
@@ -110,6 +111,7 @@ $(foreach val,$(SUBDIRS),\
 	$(eval dir:=$(val))\
 	$(rbeg)\
 	$(eval include $(dir)/Rules.mk)\
+	$(call dinclude)\
 	$(rend))
 
 $(DIR_OBJS)/%.o: %.c
