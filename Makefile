@@ -26,15 +26,25 @@ INST	?=install
 # $(CF_$@) - C flags, specific for compiled obj file
 # $(LF_ALL) - generic linker flags
 # $(LF_$@) - link flags, specific for file
-CC_COMP	=$(CC)\
+
+ifeq ($(NOSTYLE),y)
+style = $(1)
+else
+style = @$(1); echo $(2)
+endif
+
+__CC_COMP=$(CC)\
 	 $(CF_ALL)\
 	 $(CF_$@)\
 	 $(CF_$(patsubst %/,%,$(dir $<)))\
 	 -o $@ -c $<
-L_LINK	=$(CC)\
+__L_LINK=$(CC)\
 	 $(LF_ALL)\
 	 $(LF_$@)\
 	 -o $@ $^
+
+CC_COMP	=$(call style,$(__CC_COMP),[CC] $@)
+L_LINK	=$(call style,$(__L_LINK),[LD] $@)
 
 # sp = stack pointer
 # dirstack_* = stack of directories
@@ -118,20 +128,38 @@ $(DIR_OBJS)/%.o: %.c
 	$(dirguard)
 	$(CC_COMP)
 
+# first echo writes directory, where .o file located
+# to dep file.
+#
+# .out/					   <- now in depfile
+#
+# next C compiler generates make dependency, with
+# given flags (include dirs needed), and writes it to
+# 
+#
+# first  - for directory wide
+# second - specific for file
+#
+# .out/foo/file.o: foo/file.c bar/header.h <- now in depfile
+#
+__CDEPS	=\
+echo -n $(@D)/ > $@ ;\
+$(CC) -MM $< \
+$(CF_$(patsubst %.c,$(DIR_OBJS)/%.o,$<)) \
+$(CF_$(patsubst %/,%,$(dir $<))) \
+>> $@
+
+CDEPS =$(call style,$(__CDEPS),[DP] $@)
+
 $(DIR_OBJS)/%.d: %.c
 	$(dirguard)
-	echo -n $(@D)/ > $@
-	$(CC) -MM $< $(CF_$(patsubst %.c,\
-	$(DIR_OBJS)/%.o,\
-	$<))\
-	$(CF_$(patsubst %/,%,$(dir $<)))\
-	>> $@
-
+	$(CDEPS)
 
 init:
 # init build tree
-	mkdir -p $(DIR_OUT) \
-		$(addprefix $(DIR_OUT)/,$(shell find $(ROOT_TOP) -type d))
+	$(call style,mkdir -p $(DIR_OUT) \
+	$(addprefix $(DIR_OUT)/,$(shell find $(ROOT_TOP) -type d)),\
+	[DR] Initializing build tree...)
 # TGT_* CLEAN are user defined
 targets: $(TGT_BIN) $(TGT_SBIN) $(TGT_ETC) $(TGT_LIB)
 
