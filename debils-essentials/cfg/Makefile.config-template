@@ -1,0 +1,16 @@
+# Debils config file
+
+# Which directories to build
+ROOT_TOP	:=ant bee
+
+# Build profile
+# Options: gcc, default, custom
+BS_PROFILE	:=
+
+# Disable sexy build by default
+NOSTYLE		:=y
+
+# Use those, when choosing "custom" build profile.
+CC	?=
+AS	?=
+LD	?=
