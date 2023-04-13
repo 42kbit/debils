@@ -31,8 +31,8 @@ $(shell cp $(BSE_CFG_FILE_SRC) $(BSE_CFG_FILE_DST))
 $(error now configure $(BSE_CFG_FILE_DST) and go on)
 endif
 
-include $(BSE_DIR)/lib.mk
 include $(BSE_DIR)/var.mk
+include $(BSE_DIR)/lib.mk
 
 # TODO: Maybe remove this
 # In config file, if variable starts with 

@@ -11,10 +11,10 @@ OPTLVL	?=-O2
 
 ifeq ($(DEBUG),n)
 CF_ALL	+=$(OPTLVL)
-ASF_ALL	+=
+ASF_ALL	+=$(OPTLVL)
 else
-CF_ALL	+=$(OPTLVL) -g
-ASF_ALL	+=$(OPTLVL) -g
+CF_ALL	+=$(OPTLVL) $(CC_DEBUG_FLAGS)
+ASF_ALL	+=$(OPTLVL) $(CC_DEBUG_FLAGS)
 endif
 
 # LINK FLAGS

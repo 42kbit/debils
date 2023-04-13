@@ -7,6 +7,8 @@ AS	:=gcc
 # Link with gcc
 LD	:=gcc
 
+CC_DEBUG_FLAGS	:=-g
+
 __CDEPS	=\
 echo -n $(@D)/ > $@ ;\
 $(CC) -MM $< \

@@ -5,10 +5,11 @@ ROOT_TOP	:=ant bee
 
 # Build profile
 # Options: gcc, default, custom
-BS_PROFILE	:=
+BS_PROFILE	:=gcc
 
 # Disable sexy build by default
 NOSTYLE		:=y
+DEBUG		:=n
 
 # Use those, when choosing "custom" build profile.
 CC	?=
